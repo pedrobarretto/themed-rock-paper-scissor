@@ -1,3 +1,5 @@
+import socket
+import threading
 import pygame
 from network import Network
 import pickle
@@ -7,6 +9,43 @@ width = 700
 height = 700
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Client")
+
+
+# client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# client.connect((socket.gethostname(), 32016))
+nickname = input("Choose your nickname: ")
+
+
+# def receive(client):
+#     while True:  # making valid connection
+#         try:
+#             message = client.recv(1024).decode('ascii')
+
+#             if message == 'QUIT':
+#                 print('Desconectando do server...')
+#                 client.close()
+#                 break
+
+#             if message == 'NICKNAME':
+#                 client.send(nickname.encode('ascii'))
+#             else:
+#                 print(message)
+#         except:  # case on wrong ip/port details
+#             print("An error occured!")
+#             client.close()
+#             break
+
+
+# def write(client):
+#     while True:  # message layout
+#         message = '{}: {}'.format(nickname, input(''))
+
+#         if message == 'QUIT':
+#             print('Desconectando do server...')
+#             client.close()
+#             break
+
+#         client.send(message.encode('ascii'))
 
 
 class Button:
@@ -92,8 +131,24 @@ def main():
     run = True
     clock = pygame.time.Clock()
     n = Network()
-    player = int(n.getP())
+    player = 0
+    print('qty: ', str(n.qty))
+    print('str(n.getP()): ', str(n.getP()))
+    if (str(n.getP()) == 'NICKNAME' or str(n.getP()) == 'QUIT' or str(n.getP()) == 'None') and n.qty == 0:
+        print('passei por aqui')
+    else:
+        print('passei no else')
+        # player = int(n.getP())
+        player = 1
     print("You are player", player)
+
+    # receive_thread = threading.Thread(
+    #     target=n.receive(nickname))  # receiving multiple messages
+    # receive_thread.start()
+    # write_thread = threading.Thread(
+    #     target=n.write(nickname))  # sending messages
+    # write_thread.start()
+    # print('####################')
 
     while run:
         clock.tick(60)
